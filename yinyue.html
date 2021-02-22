@@ -270,6 +270,27 @@
             background-color: #777;
             z-index: 998;
         }
+        .white{
+            height: 400px;
+            width: 180px;
+            position: relative;
+            overflow: hidden;
+            left: 0;
+            margin: 10px 0;
+        }
+        .lyric{
+            width: 180px;
+            height: 390px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            
+            padding-left: 18px;
+            
+        }
+        .lyric span{
+            font-size: 12px;
+            line-height: 18px;
+        }
     </style>
 </head>
 <body>
@@ -318,7 +339,9 @@
                     </div>
                 </div>
                 <div class="white">
-
+                    <div class="lyric">
+                        <span v-for="item in lyric">{{ item.toString().substring(10,)  }}<br></span>
+                    </div>
                 </div>
             </div>
             <div class="footer">

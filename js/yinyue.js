@@ -25,6 +25,11 @@
     请求方法:get
     请求参数:id(mvid,为0表示没有mv)
     响应内容:mv的地址
+  6.歌词获取
+    请求地址:https://autumnfish.cn/lyric
+    请求方法:get
+    请求参数:id(歌曲id)
+    响应内容:歌词的内容
 */
 
 var yu = new Vue({
@@ -38,6 +43,7 @@ var yu = new Vue({
         isplay:false,
         mvurl:'',
         showmv:false,
+        lyric:'',
 
     },
     methods:{
@@ -46,7 +52,7 @@ var yu = new Vue({
             axios.get('https://autumnfish.cn/search?keywords='+this.query)
             .then(function(res){
                 this_yu.song_list=res.data.result.songs;
-                console.log(this_yu.song_list);
+                // console.log(this_yu.song_list);
             },function(err){
 
             });
@@ -57,24 +63,32 @@ var yu = new Vue({
             var this_yu=this;
             axios.get("https://autumnfish.cn/song/url?id="+musicid.id)
             .then(function(res){
-                console.log(res);
+                // console.log(res);
                 this_yu.music_url=res.data.data[0].url;
             },function(err){
 
             });
             axios.get('https://autumnfish.cn/song/detail?ids='+musicid.id)
             .then(function(res){
-                console.log(res);
+                // console.log(res);
                 this_yu.music_img=res.data.songs[0].al.picUrl;
-                console.log(this_yu.music_img)
+                // console.log(this_yu.music_img)
             },function(err){
                 
             });
             axios.get('https://autumnfish.cn/comment/hot?type=0&id='+musicid.id)
             .then(function(res){
-                console.log(res);
+                // console.log(res);
                 this_yu.wyy_bbll=res.data.hotComments;
-                console.log(this_yu.wyy_bbll)
+                // console.log(this_yu.wyy_bbll)
+            },function(err){
+                
+            });
+            axios.get('https://autumnfish.cn/lyric?id='+musicid.id)
+            .then(function(res){
+                // console.log(res);
+                this_yu.lyric = res.data.lrc.lyric.split("\n");
+              
             },function(err){
                 
             });
@@ -91,7 +105,7 @@ var yu = new Vue({
           .then(function(res){
             this_yu.showmv=true;
             this_yu.mvurl=res.data.data.url;
-            console.log(this_yu.mvurl);
+            // console.log(this_yu.mvurl);
           },function(err){
 
           });
