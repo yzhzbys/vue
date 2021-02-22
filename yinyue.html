@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -43,6 +44,7 @@
             transform: translateX(-50%) translateY(-50%);
             background-color: rgba(255,255,255, 0.5);
             border-radius: 5px;
+            box-shadow: 0 0 100px;
             
         }
         .header{
@@ -69,6 +71,9 @@
             height: 400px;
         }
         .search{
+            display: inline-block;
+        }
+        .search_text{
             height: 30px;
             width: 150px;
             border-radius: 15px;
@@ -76,6 +81,20 @@
             padding: 0 10px;
             float: left;
         }
+        .search_button{
+            height: 30px;
+            border-radius: 15px;
+            border: 0;
+            padding: 0 10px;
+            float: left;
+            cursor: pointer;
+            transition: all 1s;
+        }
+        .search_button:hover{
+            background-color: #8f89e2;
+            color:#fff;
+        }
+        
         .song_line{
             height: 400px;
             width: 200px;
@@ -96,17 +115,22 @@
         /* .song_list::-webkit-scrollbar{
             display: none;
         } */
+        .song_list li:hover{
+            background-color:#8f89e2;
+            color:#fff;
+        }
         .song_list li{
             display: flex;
+            transition: all 1s;
         }
-        .song_list li b{
+        .song_list li p{
             font-size: 14px;
             display: block;
             overflow: hidden;
             text-overflow:ellipsis;
             white-space: nowrap;
             cursor: pointer;
-            line-height: 36px;
+            line-height: 20px;
         }
         .song_list li span{
             display: block;
@@ -254,7 +278,10 @@
             <div class="header">
                 <div class="header_c">
                     <h1 class='yuyu'>鱼王的音乐播放器</h1>
-                    <input class='search' type="text" placeholder="搜索" v-model='query' @keyup.enter='search'>
+                    <div class='search'>
+                        <input class='search_text' type="text" placeholder="输入歌曲名称或歌手" v-model='query' @keyup.enter='search'>
+                        <input class='search_button' type="button" value="搜索" @click='search'>
+                    </div>
                 </div>
             </div>
             <div class="content">
@@ -264,7 +291,7 @@
                             <span>
                                 <i v-if='item.mvid!=0' @click='mv(item.mvid)'>mv</i>
                             </span>
-                            <b @click='music(item)'>{{item.name}}--{{ item.artists[0].name }}</b>
+                            <p @click='music(item)' :title="item.name+'--'+item.artists[0].name">{{item.name}}--{{ item.artists[0].name }}</p>
                         </li>
                     </ul>
                 </div>
