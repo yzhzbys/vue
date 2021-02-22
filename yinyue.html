@@ -99,7 +99,7 @@
         .song_list li{
             display: flex;
         }
-        .song_list li y{
+        .song_list li b{
             font-size: 14px;
             display: block;
             overflow: hidden;
@@ -264,7 +264,7 @@
                             <span>
                                 <i v-if='item.mvid!=0' @click='mv(item.mvid)'>mv</i>
                             </span>
-                            <y @click='music(item)'>{{item.name}}--{{ item.artists[0].name }}</y>
+                            <b @click='music(item)'>{{item.name}}--{{ item.artists[0].name }}</b>
                         </li>
                     </ul>
                 </div>
