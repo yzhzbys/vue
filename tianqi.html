@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+    <title>鱼王的天气预报</title>
+    <style>
+        div{
+            margin:0;
+            padding: 0;
+        }
+        .all{
+            margin: 0 auto;
+            text-align: center;
+        }
+        ul:after {   
+            content:"";   
+            display:block;   
+            clear:both;   
+            height:0;   
+        }  
+        ul {   
+            margin:0;   
+            padding:10px;   
+            list-style:none;   
+            background-color:white;   
+            zoom:1;/* IE */  
+            text-align: center;
+        } 
+        li{
+            list-style:none;
+        }  
+        .content li{
+            display: inline-block; 
+        }
+        .high{
+            color: rgba(247, 224, 17, 0.89);
+        }
+        .low{
+            color: rgb(59, 191, 243);
+        }
+        .footer{
+            color: #777;
+            padding:10px 15px;
+            height: 20px;
+            text-align: center;
+            border-top:1px solid #e6e6e6;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class='all' id="yuyu">
+        <div class="header">
+            <h1>鱼王的天气预报</h2>
+                <input @keyup.enter='search'v-model='city' type="text" placeholder="输入需要查询的城市">
+                <button @click="search">查询</button>
+                <div class="hotcity">
+                    <a href="javascript:;" @click='changecity("长沙")'>长沙</a>
+                    <a href="javascript:;" @click='changecity("湘潭")'>湘潭</a>
+                    <a href="javascript:;" @click='changecity("株洲")'>株洲</a>
+                    <a href="javascript:;" @click='changecity("永州")'>永州</a>
+                    <a href="javascript:;" @click='changecity("岳阳")'>岳阳</a>
+                </div>
+        </div>
+        <div class="content">
+            <ul>
+                <li v-for='item in list'>
+                    <div><span>{{item.date}}</span></div>
+                    <div><span>{{item.fengli}}</span></div>
+                    <div><span>{{item.fefngxiang}}</span></div>
+                    <div class="high"><span>最{{item.high}}</span></div>
+                    <div class='low'><span>最{{item.low}}</span></div>
+                    <div><span>{{item.type}}</span></div>
+                </li>
+            </ul>
+        </div>
+        <footer class="footer">
+            <span>默认城市：{{index_city}}</span>
+        </footer>
+    </div>
+    
+    <script src="js/tianqi.js"></script>
+</body>
+</html>

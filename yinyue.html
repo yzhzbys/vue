@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>鱼王的音乐播放器</title>
+    <style>
+        ul,li{
+            list-style: none;
+            
+            
+        }
+        input,audio,video{
+            outline: none;
+        }
+        .yu_all{
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            
+        }
+        .yu_all::before{
+            content: '';
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            align-items: center;
+            background-image: url('img/萌将传end！.png');
+            background-size: cover;
+            background-position: center;
+            filter:blur(10px);
+        }
+        .player{
+            
+            position: fixed;
+            width: 800px;
+            height: 500px;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            background-color: rgba(255,255,255, 0.5);
+            border-radius: 5px;
+            
+        }
+        .header{
+            height: 50px;
+            background-color: #BAFBFF;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        
+        .header_c{
+            height: 50px;
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .yuyu{
+            margin: 0;
+            padding: 0;
+        }
+        .content{
+            display: flex;
+            height: 400px;
+        }
+        .search{
+            height: 30px;
+            width: 150px;
+            border-radius: 15px;
+            border: 0;
+            padding: 0 10px;
+            float: left;
+        }
+        .song_line{
+            height: 400px;
+            width: 200px;
+            position: relative;
+            overflow: hidden;
+            left: 0;
+        }
+        .song_list{
+            width: 180px;
+            height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            margin: 0 auto;
+
+            
+        }
+        /* 此属性针对支持webkit浏览器：chrome */
+        /* .song_list::-webkit-scrollbar{
+            display: none;
+        } */
+        .song_list li{
+            display: flex;
+        }
+        .song_list li y{
+            font-size: 14px;
+            display: block;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+            cursor: pointer;
+            line-height: 36px;
+        }
+        .song_list li span{
+            display: block;
+            width: 20px;
+            height: 18px;
+        }
+        .song_list li span i{
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            
+        }
+        .song_content{
+            height: 400px;
+            width: 400px;
+            position: relative;
+        }
+        .song_img{
+            height: 200px;
+            width: 200px;
+            position: relative;
+            left: 50%;
+            top:10%;
+            transform: translateX(-50%);
+        }
+        .song_img_disc{
+            position: absolute;
+            max-width: 120%;
+            max-height: 120%;
+            margin: -10%;
+            border-radius: 50%;
+            z-index: 2;
+            
+        }
+        .song_img_img{
+            position: absolute;
+            width: 168px;
+            height: 168px;
+            left: 16px;
+            top: 16px;
+            border-radius: 50%;
+            z-index: 3;
+            
+        }
+        .wyy_bbll{
+            height: 150px;
+            width: 400px;
+            position: relative;
+            overflow: hidden;
+            left: 0;
+            top:60px;
+            margin: 10px 0;
+        }
+        .wyy_bblist{
+            width: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 130px;
+            padding-left: 18px;
+            
+        }
+        .wyy_bblist li{
+            font-size: 12px;
+            line-height: 18px;
+        }
+        /* .wyy_list::-webkit-scrollbar{
+            display: none;
+        } */
+        .wyy_bbll dl{
+            position: relative;
+            font-size: 12px;
+            line-height: 18px;
+            color: #777;
+        }
+        .wyy_tx{
+            position: absolute;
+            top: 0;
+        }
+        .wyy_tx img{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .wyy_tt{
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .footer{
+            height: 50px;
+            width: 100%;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        .audio{
+            height: 50px;
+            width: 100%;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        @keyframes yu_rotate{
+            from{
+                transform: rotateZ(0);
+            }to{
+                transform: rotateZ(360deg);
+            }
+        }
+        .autofs{
+            animation-name:yu_rotate;
+            animation-duration:10s;
+            animation-timing-function:linear;
+            animation-delay:0s;
+            animation-iteration-count:infinite;
+            animation-direction:normal;
+            animation-fill-mode:none;
+            animation-play-state: paused;
+        }
+        .fsplay{
+            animation-play-state: running;
+        }
+        .mv_all video{
+            position: fixed;
+            width: 80%;
+            height: 80%;
+            left: 50%;
+            top:50%;
+            transform: translateX(-50%);
+            margin-top: -200px;
+            z-index:999;
+        }
+        .mv_all .mv_cl{
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: #777;
+            z-index: 998;
+        }
+    </style>
+</head>
+<body>
+    <div class='yu_all' id="yu">
+        <div class="player">
+            <div class="header">
+                <div class="header_c">
+                    <h1 class='yuyu'>鱼王的音乐播放器</h1>
+                    <input class='search' type="text" placeholder="搜索" v-model='query' @keyup.enter='search'>
+                </div>
+            </div>
+            <div class="content">
+                <div class="song_line">
+                    <ul class="song_list">
+                        <li v-for='item in song_list' >
+                            <span>
+                                <i v-if='item.mvid!=0' @click='mv(item.mvid)'>mv</i>
+                            </span>
+                            <y @click='music(item)'>{{item.name}}--{{ item.artists[0].name }}</y>
+                        </li>
+                    </ul>
+                </div>
+                <div class="song_content">
+                    <div class="song_img">
+                        <img src="img/disc.png" class="song_img_disc autofs" :class="{fsplay:isplay}" alt="">
+                        <img :src="music_img" class="song_img_img autofs" :class="{fsplay:isplay}" alt="">
+                    </div>
+                    <div class="wyy_bbll">
+                        <!-- <ul class="wyy_bblist">
+                            <li v-for='item in wyy_bbll'>
+                                <span>{{item.content}}</span>
+                            </li>
+                        </ul> -->
+                        <div class="wyy_bblist">
+                            <dl v-for='item in wyy_bbll'>
+                                <dt class="wyy_tx">
+                                    <img :src="item.user.avatarUrl" alt="">
+                                </dt>
+                                <dd class="wyy_tt">{{item.user.nickname}}</dd>
+                                <dd>{{item.content}}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="white">
+
+                </div>
+            </div>
+            <div class="footer">
+                <audio @play='play' @pause='pause' :src="music_url" controls autoplay class="audio"></audio>
+            </div>
+            <div class="mv_all" v-show='showmv'>
+                <video :src="mvurl" controls='controls' ></video>
+                <div class="mv_cl" @click='closemv'></div>
+            </div>
+        </div>
+            
+        
+    </div>
+
+    <script src="js/yinyue.js"></script>
+</body>
+</html>
