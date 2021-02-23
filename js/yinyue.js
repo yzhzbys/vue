@@ -73,6 +73,13 @@ var yu = new Vue({
                 // console.log(res);
                 this_yu.music_img=res.data.songs[0].al.picUrl;
                 // console.log(this_yu.music_img)
+                var yu=document.getElementById('yu')
+                var beforstyle = window.getComputedStyle(yu,"::before")
+                // console.log(beforstyle);
+                // console.log(beforstyle.getPropertyValue("background-image"));
+                // console.log(this_yu.music_img);
+                document.styleSheets[0].addRule('.yu_all::before','background-image:url("+this_yu.music_img+")');
+                yu.style.backgroundImage = "url("+this_yu.music_img+")";
             },function(err){
                 
             });
